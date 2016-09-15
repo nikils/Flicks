@@ -204,6 +204,12 @@
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    MovieDetailViewController *details = [mainStoryBoard instantiateViewControllerWithIdentifier:@"MovieDetailViewController"];
+    details.movie = self.movies[indexPath.row];
+    [self.navigationController pushViewController:details animated:YES];
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UITableViewCell *cell;
@@ -219,9 +225,8 @@
         ImageZoomViewController *imageZoom = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         imageZoom.movie = self.movies[indexPath.row];
-    } else if ([segue.identifier isEqualToString:@"CollectionMovieDetail"]) {
-        UIButton *button = sender;
-        UICollectionViewCell *collCell = (UICollectionViewCell *)button.superview.superview;
+    } else if ([segue.identifier isEqualToString:@"ShowDetails"]) {
+        UICollectionViewCell *collCell = sender;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:collCell];
         MovieDetailViewController *details = segue.destinationViewController;
         details.movie = self.movies[indexPath.row];
@@ -229,6 +234,7 @@
 }
 - (IBAction)onGridChange:(UISegmentedControl *)sender {
     self.isGrid = !self.isGrid;
+    [self adjustTableViewFrame];
     if (self.isGrid) {
         self.collectionView.hidden = NO;
         self.tableView.hidden = YES;
@@ -307,11 +313,15 @@
     }
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-
+- (void)adjustTableViewFrame {
     CGRect rect = self.navigationController.navigationBar.frame;
     self.tableView.contentInset = UIEdgeInsetsMake(rect.size.height+rect.origin.y, 0, 0, 0);
+    self.collectionView.contentInset = UIEdgeInsetsMake(rect.size.height+rect.origin.y, 0, 0, 0);
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self adjustTableViewFrame];
 }
 
 @end

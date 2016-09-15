@@ -25,19 +25,12 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieCollectionViewCell" id="817-J8-r94" customClass="MovieCollectionViewCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="77" height="115"/>
+                                        <rect key="frame" x="0.0" y="64" width="77" height="115"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="77" height="115"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="uaJ-kv-hq6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="77" height="115"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <connections>
-                                                        <segue destination="hLg-MT-lRp" kind="push" identifier="CollectionMovieDetail" id="lJJ-kg-otH"/>
-                                                    </connections>
-                                                </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="GrA-uN-zjR">
                                                     <rect key="frame" x="0.0" y="0.0" width="77" height="115"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -196,7 +189,7 @@
         <!--Movie Detail View Controller-->
         <scene sceneID="4zQ-ie-1WW">
             <objects>
-                <viewController id="hLg-MT-lRp" customClass="MovieDetailViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieDetailViewController" id="hLg-MT-lRp" customClass="MovieDetailViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WRm-uT-d3G">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -313,7 +306,4 @@
         <image name="list.png" width="16" height="16"/>
         <image name="time.png" width="16" height="16"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="lJJ-kg-otH"/>
-    </inferredMetricsTieBreakers>
 </document>
