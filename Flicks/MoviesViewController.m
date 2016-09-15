@@ -169,6 +169,13 @@
         cell.selectedBackgroundView = backgroundView;
     }
     
+    if (!cell.posterImage.gestureRecognizers) {
+        UITapGestureRecognizer *tapImage = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tableImageTap:)];
+        tapImage.numberOfTapsRequired = 1;
+        [cell.posterImage addGestureRecognizer:tapImage];
+        cell.posterImage.userInteractionEnabled = YES;
+    }
+
     [cell.posterImage setImageWithURLRequest:imgRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         cell.posterImage.alpha = 0.0;
         cell.posterImage.image = image;
@@ -204,6 +211,19 @@
     return cell;
 }
 
+- (void)tableImageTap:(UIGestureRecognizer *)tapGesture {
+    UIImageView *posterImage = (UIImageView *)tapGesture.view;
+    UITableViewCell *cell = (UITableViewCell *)posterImage.superview.superview;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+    UIStoryboard *mainStory = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+    ImageZoomViewController *imageZoom = [mainStory instantiateViewControllerWithIdentifier:@"ImageZoomViewController"];
+    imageZoom.movie = self.movies[indexPath.row];
+
+    [self.navigationController pushViewController:imageZoom animated:YES];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UITableViewCell *cell;
     [self.searchBar resignFirstResponder];
@@ -212,12 +232,6 @@
         MovieDetailViewController *details = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         details.movie = self.movies[indexPath.row];
-    } else if ([segue.identifier isEqualToString:@"ImageZoom"]) {
-        UIButton *button = sender;
-        cell = (UITableViewCell *)button.superview.superview;
-        ImageZoomViewController *imageZoom = segue.destinationViewController;
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        imageZoom.movie = self.movies[indexPath.row];
     } else if ([segue.identifier isEqualToString:@"GridShowDetails"]) {
         UICollectionViewCell *collCell = sender;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:collCell];
