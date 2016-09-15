@@ -41,6 +41,7 @@
                                         <color key="backgroundColor" red="1" green="0.75285322060000004" blue="0.35368078180000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="posterImage" destination="GrA-uN-zjR" id="sha-xx-X4i"/>
+                                            <segue destination="hLg-MT-lRp" kind="push" identifier="GridShowDetails" id="GNK-cY-Nwa"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -306,4 +307,7 @@
         <image name="list.png" width="16" height="16"/>
         <image name="time.png" width="16" height="16"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="GNK-cY-Nwa"/>
+    </inferredMetricsTieBreakers>
 </document>

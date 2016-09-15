@@ -204,13 +204,6 @@
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    MovieDetailViewController *details = [mainStoryBoard instantiateViewControllerWithIdentifier:@"MovieDetailViewController"];
-    details.movie = self.movies[indexPath.row];
-    [self.navigationController pushViewController:details animated:YES];
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UITableViewCell *cell;
     [self.searchBar resignFirstResponder];
@@ -225,7 +218,7 @@
         ImageZoomViewController *imageZoom = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         imageZoom.movie = self.movies[indexPath.row];
-    } else if ([segue.identifier isEqualToString:@"ShowDetails"]) {
+    } else if ([segue.identifier isEqualToString:@"GridShowDetails"]) {
         UICollectionViewCell *collCell = sender;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:collCell];
         MovieDetailViewController *details = segue.destinationViewController;
