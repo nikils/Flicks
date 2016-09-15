@@ -30,6 +30,7 @@ The following **additional** features are implemented:
 
 - [x] Infinite scrolling
 - [x] Searching using API
+- [x] Autoresizing masks for landscape mode
 
 ## Video Walkthrough
 

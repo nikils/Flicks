@@ -47,7 +47,6 @@
     [self.colRefreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     self.loadingView.layer.cornerRadius = 10.0;
     self.loadingView.hidden = YES;
-    self.tableView.contentInset = UIEdgeInsetsMake(0, -1, 0, 0);
     self.isGrid = NO;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -306,6 +305,13 @@
             [self.tableView reloadData];
         }
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+
+    CGRect rect = self.navigationController.navigationBar.frame;
+    self.tableView.contentInset = UIEdgeInsetsMake(rect.size.height+rect.origin.y, 0, 0, 0);
 }
 
 @end
