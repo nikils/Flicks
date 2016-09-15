@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
--(void)loadMovies:(NSString *)searchText;
+@property (strong, nonatomic) UIRefreshControl *colRefreshControl;
 @end
 
 @implementation MoviesViewController
@@ -37,10 +37,14 @@
     [super viewDidLoad];
     self.refreshControl = [[UIRefreshControl alloc] initWithFrame:self.refreshControl.bounds];
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    self.colRefreshControl = [[UIRefreshControl alloc] initWithFrame:self.refreshControl.bounds];
+    self.colRefreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView addSubview:self.refreshControl];
-    [self.refreshControl addTarget:self action:@selector(loadMovies) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView addSubview:self.colRefreshControl];
+    [self.colRefreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     self.loadingView.layer.cornerRadius = 10.0;
     self.loadingView.hidden = YES;
     self.tableView.contentInset = UIEdgeInsetsMake(0, -1, 0, 0);
@@ -67,6 +71,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)refreshData {
+    [self loadMovies:nil];
+}
+
 - (void)loadMovies:(NSString *)searchText {
     if (self.callInProgress) {
         return;
@@ -78,7 +86,7 @@
     [NSString stringWithFormat:@"https://api.themoviedb.org/3/movie/%@?api_key=%@&page=%@", self.endpoint, apiKey, self.currentPage];
     if (searchText) {
         urlString =
-        [NSString stringWithFormat:@"https://api.themoviedb.org/3/search/movie?api_key=%@&query=%@", apiKey, searchText];
+        [NSString stringWithFormat:@"https://api.themoviedb.org/3/search/movie?api_key=%@&query=%@", apiKey, [searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     self.errorView.hidden = YES;
     self.errorLabel.text = @"";
@@ -114,12 +122,13 @@
                                                         self.allMovies = self.movies;
                                                     }
                                                     self.totalPage = responseDictionary[@"total_pages"];
-                                                    [self.refreshControl endRefreshing];
                                                     self.segmentControl.hidden = NO;
                                                     if (self.isGrid) {
+                                                        [self.colRefreshControl endRefreshing];
                                                         self.collectionView.hidden = NO;
                                                         [self.collectionView reloadData];
                                                     } else {
+                                                        [self.refreshControl endRefreshing];
                                                         self.tableView.hidden = NO;
                                                         [self.tableView reloadData];
                                                     }
@@ -157,7 +166,7 @@
     NSURLRequest *imgRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:imageUrl]];
     if (![cell.selectedBackgroundView.backgroundColor isEqual:[UIColor purpleColor]]) {
         UIView *backgroundView = [[UIView alloc] init];
-        backgroundView.backgroundColor = [UIColor purpleColor];
+        backgroundView.backgroundColor = [UIColor colorWithRed:1 green:0.80 blue:0.40 alpha:1]; //R:1 G:0.77 B:0.35 A:1
         cell.selectedBackgroundView = backgroundView;
     }
     
@@ -264,11 +273,8 @@
     searchBar.text = @"";
     [searchBar resignFirstResponder];
     self.movies = self.allMovies;
-    if (self.isGrid) {
-        [self.collectionView reloadData];
-    } else {
-        [self.tableView reloadData];
-    }
+    [self.collectionView reloadData];
+    [self.tableView reloadData];
 }
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     CGPoint cOffset;
