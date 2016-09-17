@@ -31,12 +31,14 @@ The following **additional** features are implemented:
 - [x] Infinite scrolling
 - [x] Searching using API
 - [x] Autoresizing masks for landscape mode
+- [x] Autolayout
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
 <img src='http://i.imgur.com/BujL2Kw.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+Video Walkthrough for landscape mode with autoresizing masks
 <img src='http://i.imgur.com/Th9Jb43.gif' title='Video Walkthrough landscape mode' width='' alt='Video Walkthrough landscape mode' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).

@@ -26,16 +26,12 @@
     
     [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
     self.dateLabel.text = [dateFormatter stringFromDate:releaseDate];
-    [self.synopsisLabel sizeToFit];
     
-    CGRect frame = self.infoView.frame;
-    frame.size.height = self.synopsisLabel.frame.size.height + self.synopsisLabel.frame.origin.y + 10;
-    self.infoView.frame = frame;
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 10 + self.infoView.frame.origin.y + self.infoView.frame.size.height);
     [self.popularityProgress setProgress:0 animated:NO];
     [self loadImage];
     [self loadMovie];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
